@@ -9,7 +9,7 @@ type StockValue struct {
 	Total       int    `json:"total"`
 }
 
-type IStockvalue interface {
+type InventStockValue interface {
 	CreateStockValue(*StockValue)
 	GetAllStockValues() []StockValue
 	GetStockValueByID(int) StockValue
