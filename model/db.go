@@ -16,6 +16,7 @@ type DB struct {
 	*gorm.DB
 }
 
+// NewDB initialized the database
 func InitDB() *DB {
 	db, err := gorm.Open(dbEngine, dbName)
 	if err != nil {
