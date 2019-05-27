@@ -34,7 +34,7 @@ func setRoutes(db *model.DB, r *gin.Engine) {
 	r.GET("/stock", GetAllStock(db))
 	r.GET("/stockbyid/:id", GetStockByID(db))
 	r.GET("/stockbysku/:sku", GetStockBySku(db))
-	r.POST("/stockupdate", UpdateStock(db))
+	r.PUT("/stockupdate", UpdateStock(db))
 
 	// stockin apis
 	r.POST("/stockin", StoreProduct(db, db))
