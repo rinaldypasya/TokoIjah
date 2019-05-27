@@ -58,7 +58,6 @@ func StoreProduct(db inventory.InventStockIn, dbStock inventory.InventStock) gin
 			})
 			return
 		}
-		return
 	}
 }
 
@@ -66,8 +65,7 @@ func StoreProduct(db inventory.InventStockIn, dbStock inventory.InventStock) gin
 func GetAllStoredProducts(db inventory.InventStockIn) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var StockIn []inventory.StockIn
-		StockIn = db.GetAllStoredProducts()
+		StockIn := db.GetAllStoredProducts()
 		if len(StockIn) > 0 {
 			gc.JSON(http.StatusOK, gin.H{
 				"status": "true",
@@ -81,8 +79,6 @@ func GetAllStoredProducts(db inventory.InventStockIn) gin.HandlerFunc {
 			})
 			return
 		}
-
-		return
 	}
 }
 
@@ -90,8 +86,7 @@ func GetAllStoredProducts(db inventory.InventStockIn) gin.HandlerFunc {
 func GetStoredProductsBySku(db inventory.InventStockIn) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var StockIn []inventory.StockIn
-		StockIn = db.GetStoredProductsBySku(gc.Param("sku"))
+		StockIn := db.GetStoredProductsBySku(gc.Param("sku"))
 		if StockIn[0].Sku == gc.Param("sku") {
 			gc.JSON(http.StatusOK, gin.H{
 				"status": "true",
@@ -112,8 +107,7 @@ func GetStoredProductsBySku(db inventory.InventStockIn) gin.HandlerFunc {
 func StockInExportToCSV(db inventory.InventStockIn) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var allStockIn []inventory.StockIn
-		allStockIn = db.GetAllStoredProducts()
+		allStockIn := db.GetAllStoredProducts()
 
 		csvdata := init2dArray(len(allStockIn), 10)
 
@@ -235,7 +229,5 @@ func StockInImportCSV(db inventory.InventStockIn) gin.HandlerFunc {
 			"status":  false,
 			"message": "something's wrong!",
 		})
-		return
-
 	}
 }

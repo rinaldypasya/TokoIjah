@@ -34,7 +34,6 @@ func CreateStock(db inventory.InventStock) gin.HandlerFunc {
 			})
 			return
 		}
-		return
 	}
 }
 
@@ -42,8 +41,7 @@ func CreateStock(db inventory.InventStock) gin.HandlerFunc {
 func GetAllStock(db inventory.InventStock) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var stock []inventory.Stock
-		stock = db.GetAllStock()
+		stock := db.GetAllStock()
 		if len(stock) > 0 {
 			gc.JSON(http.StatusOK, gin.H{
 				"status": "true",
@@ -57,8 +55,6 @@ func GetAllStock(db inventory.InventStock) gin.HandlerFunc {
 			})
 			return
 		}
-
-		return
 	}
 }
 
@@ -97,8 +93,7 @@ func GetStockByID(db inventory.InventStock) gin.HandlerFunc {
 func GetStockBySku(db inventory.InventStock) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var stock inventory.Stock
-		stock = db.GetStockBySku(gc.Param("sku"))
+		stock := db.GetStockBySku(gc.Param("sku"))
 		if stock.Sku == gc.Param("sku") {
 			gc.JSON(http.StatusOK, gin.H{
 				"status": "true",
@@ -145,8 +140,7 @@ func UpdateStock(db inventory.InventStock) gin.HandlerFunc {
 func StockExportToCSV(db inventory.InventStock) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var allstock []inventory.Stock
-		allstock = db.GetAllStock()
+		allstock := db.GetAllStock()
 
 		csvdata := init2dArray(len(allstock), 4)
 
@@ -187,7 +181,6 @@ func StockExportToCSV(db inventory.InventStock) gin.HandlerFunc {
 			"message":  "Stock data exported to csv successfully!",
 			"filename": fileName,
 		})
-		return
 	}
 }
 
@@ -200,7 +193,6 @@ func StockImportCSV(db inventory.InventStock) gin.HandlerFunc {
 		file, _ := gc.FormFile("stockimport")
 		dst := "./csv/" + file.Filename
 		gc.SaveUploadedFile(file, dst)
-		// csvfile, err := os.Open("./csv/import_stock.csv")
 		csvfile, err := os.Open("./csv/" + file.Filename)
 		if err != nil {
 			gc.JSON(http.StatusBadRequest, gin.H{
@@ -231,8 +223,7 @@ func StockImportCSV(db inventory.InventStock) gin.HandlerFunc {
 
 		if len(stock) > 0 {
 			for i := 0; i < len(stock); i++ {
-				var tableStock inventory.Stock
-				tableStock = db.GetStockBySku(stock[i].Sku)
+				tableStock := db.GetStockBySku(stock[i].Sku)
 				if tableStock.Sku != "" { // data already exist in stock table, update the data then
 					tableStock.Name = stock[i].Name
 					tableStock.Amount += stock[i].Amount
@@ -262,7 +253,6 @@ func StockImportCSV(db inventory.InventStock) gin.HandlerFunc {
 			"status":  false,
 			"message": "something's wrong!",
 		})
-		return
 	}
 }
 

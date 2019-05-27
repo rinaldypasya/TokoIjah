@@ -342,8 +342,6 @@ func SaleReportImportCSV(db inventory.InventSaleReport) gin.HandlerFunc {
 			"status":  false,
 			"message": "something's wrong!",
 		})
-		return
-
 	}
 }
 

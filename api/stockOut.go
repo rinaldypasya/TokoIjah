@@ -52,7 +52,6 @@ func RemoveProduct(db inventory.InventStockOut, dbStock inventory.InventStock) g
 			})
 			return
 		}
-		return
 	}
 }
 
@@ -60,8 +59,7 @@ func RemoveProduct(db inventory.InventStockOut, dbStock inventory.InventStock) g
 func GetAllOutProducts(db inventory.InventStockOut) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var StockOut []inventory.StockOut
-		StockOut = db.GetAllOutProducts()
+		StockOut := db.GetAllOutProducts()
 		if len(StockOut) > 0 {
 			gc.JSON(http.StatusOK, gin.H{
 				"status": "true",
@@ -75,8 +73,6 @@ func GetAllOutProducts(db inventory.InventStockOut) gin.HandlerFunc {
 			})
 			return
 		}
-
-		return
 	}
 }
 
@@ -84,8 +80,7 @@ func GetAllOutProducts(db inventory.InventStockOut) gin.HandlerFunc {
 func GetOutProductsBySku(db inventory.InventStockOut) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var StockOut []inventory.StockOut
-		StockOut = db.GetOutProductsBySku(gc.Param("sku"))
+		StockOut := db.GetOutProductsBySku(gc.Param("sku"))
 		if StockOut[0].Sku == gc.Param("sku") {
 			gc.JSON(http.StatusOK, gin.H{
 				"status": "true",
@@ -106,8 +101,7 @@ func GetOutProductsBySku(db inventory.InventStockOut) gin.HandlerFunc {
 func StockOutExportToCSV(db inventory.InventStockOut) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var allStockOut []inventory.StockOut
-		allStockOut = db.GetAllOutProducts()
+		allStockOut := db.GetAllOutProducts()
 
 		csvdata := init2dArray(len(allStockOut), 10)
 
@@ -224,7 +218,5 @@ func StockOutImportCSV(db inventory.InventStockOut) gin.HandlerFunc {
 			"status":  false,
 			"message": "something's wrong!",
 		})
-		return
-
 	}
 }

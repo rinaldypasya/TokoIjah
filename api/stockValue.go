@@ -36,7 +36,6 @@ func CreateStockValue(db inventory.InventStockValue) gin.HandlerFunc {
 			})
 			return
 		}
-		return
 	}
 }
 
@@ -44,8 +43,7 @@ func CreateStockValue(db inventory.InventStockValue) gin.HandlerFunc {
 func GetAllStockValues(db inventory.InventStockValue) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var StockValue []inventory.StockValue
-		StockValue = db.GetAllStockValues()
+		StockValue := db.GetAllStockValues()
 		if len(StockValue) > 0 {
 			gc.JSON(http.StatusOK, gin.H{
 				"status": "true",
@@ -59,8 +57,6 @@ func GetAllStockValues(db inventory.InventStockValue) gin.HandlerFunc {
 			})
 			return
 		}
-
-		return
 	}
 }
 
@@ -98,8 +94,7 @@ func GetStockValueByID(db inventory.InventStockValue) gin.HandlerFunc {
 func GetStockValuesBySku(db inventory.InventStockValue) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var StockValue inventory.StockValue
-		StockValue = db.GetStockValuesBySku(gc.Param("sku"))
+		StockValue := db.GetStockValuesBySku(gc.Param("sku"))
 		if StockValue.Sku == gc.Param("sku") {
 			gc.JSON(http.StatusOK, gin.H{
 				"status": "true",
@@ -148,8 +143,7 @@ func UpdateStockValue(db inventory.InventStockValue) gin.HandlerFunc {
 func StockValueExportToCSV(db inventory.InventStockValue) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var allStockValue []inventory.StockValue
-		allStockValue = db.GetAllStockValues()
+		allStockValue := db.GetAllStockValues()
 
 		csvdata := init2dArray(len(allStockValue), 10)
 
@@ -245,8 +239,7 @@ func GenerateStockValue(db inventory.InventStockValue, dbstock inventory.InventS
 
 			} // end loop stock
 			// if for loop in stock for stock value finish, calculating value of stock is done, then calculate report
-			var allStockValue []inventory.StockValue
-			allStockValue = db.GetAllStockValues()
+			allStockValue := db.GetAllStockValues()
 			sumOfStockValueAmounts := 0
 			sumOfStockValueTotals := 0
 			for k := 0; k < len(allStockValue); k++ {
@@ -270,8 +263,6 @@ func GenerateStockValue(db inventory.InventStockValue, dbstock inventory.InventS
 			})
 			return
 		}
-
-		return
 	}
 }
 
@@ -319,8 +310,7 @@ func StockValueImportCSV(db inventory.InventStockValue) gin.HandlerFunc {
 
 		if len(StockValue) > 0 {
 			for i := 0; i < len(StockValue); i++ {
-				var tableStockValue inventory.StockValue
-				tableStockValue = db.GetStockValuesBySku(StockValue[i].Sku)
+				tableStockValue := db.GetStockValuesBySku(StockValue[i].Sku)
 				if tableStockValue.Sku != "" { // data already exist in stock table, update the data then
 					tableStockValue.Name = StockValue[i].Name
 					tableStockValue.Amount += StockValue[i].Amount
