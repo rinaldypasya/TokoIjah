@@ -197,11 +197,11 @@ func StockValueExportToCSV(db inventory.InventStockValue) gin.HandlerFunc {
 }
 
 // GenerateStockValue generate report from stock value in form of json data or csv
-func GenerateStockValue(db inventory.InventStockValue, dbstock inventory.InventStock, dbstockin inventory.InventStockin) gin.HandlerFunc {
+func GenerateStockValue(db inventory.InventStockValue, dbstock inventory.InventStock, dbstockin inventory.InventStockIn) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
 		var stock []inventory.Stock
-		var stockin []inventory.Stockin
+		var stockin []inventory.StockIn
 		var tempStockValue inventory.StockValue
 
 		stock = dbstock.GetAllStock() // get all products from actual stock

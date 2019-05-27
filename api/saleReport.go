@@ -23,7 +23,7 @@ type SaleReportReqBody struct {
 }
 
 // CreateSaleReport API to create one sale report instance and save it to SaleReports table
-func CreateSaleReport(db inventory.InventSaleReport, dbstockvalue inventory.InventStockvalue) gin.HandlerFunc {
+func CreateSaleReport(db inventory.InventSaleReport, dbstockvalue inventory.InventStockValue) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
 		var SaleReport inventory.SaleReport
@@ -58,7 +58,6 @@ func CreateSaleReport(db inventory.InventSaleReport, dbstockvalue inventory.Inve
 			})
 			return
 		}
-		return
 	}
 }
 
@@ -66,8 +65,7 @@ func CreateSaleReport(db inventory.InventSaleReport, dbstockvalue inventory.Inve
 func GetAllSaleReports(db inventory.InventSaleReport) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var SaleReport []inventory.SaleReport
-		SaleReport = db.GetAllSaleReports()
+		SaleReport := db.GetAllSaleReports()
 		if len(SaleReport) > 0 {
 			gc.JSON(http.StatusOK, gin.H{
 				"status": "true",
@@ -81,8 +79,6 @@ func GetAllSaleReports(db inventory.InventSaleReport) gin.HandlerFunc {
 			})
 			return
 		}
-
-		return
 	}
 }
 
@@ -90,8 +86,7 @@ func GetAllSaleReports(db inventory.InventSaleReport) gin.HandlerFunc {
 func GetSaleReportsBySKU(db inventory.InventSaleReport) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var SaleReport []inventory.SaleReport
-		SaleReport = db.GetSaleReportsBySKU(gc.Param("sku"))
+		SaleReport := db.GetSaleReportsBySKU(gc.Param("sku"))
 		if SaleReport[0].Sku == gc.Param("sku") {
 			gc.JSON(http.StatusOK, gin.H{
 				"status": "true",
@@ -112,8 +107,7 @@ func GetSaleReportsBySKU(db inventory.InventSaleReport) gin.HandlerFunc {
 func SaleReportExportToCSV(db inventory.InventSaleReport) gin.HandlerFunc {
 	return func(gc *gin.Context) {
 
-		var allSaleReport []inventory.SaleReport
-		allSaleReport = db.GetAllSaleReports()
+		allSaleReport := db.GetAllSaleReports()
 
 		csvdata := init2dArray(len(allSaleReport), 10)
 
@@ -160,7 +154,6 @@ func SaleReportExportToCSV(db inventory.InventSaleReport) gin.HandlerFunc {
 			"message":  "SaleReport data exported to csv successfully!",
 			"filename": fileName,
 		})
-		return
 	}
 }
 
@@ -182,8 +175,7 @@ func GetSaleReportsByDate(db inventory.InventSaleReport) gin.HandlerFunc {
 			to = "undefined"
 		}
 
-		var SaleReports []inventory.SaleReport
-		SaleReports = db.GetSaleReportsByDate(from, to)
+		SaleReports := db.GetSaleReportsByDate(from, to)
 		if len(SaleReports) > 0 {
 			if csvexport == "1" {
 				// export to csv
